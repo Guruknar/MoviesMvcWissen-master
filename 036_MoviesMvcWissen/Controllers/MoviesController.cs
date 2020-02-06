@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,54 +14,112 @@ namespace _036_MoviesMvcWissen.Controllers
     {
         MoviesContext db = new MoviesContext();
 
-
         // GET: Movies
         public ViewResult Index()
         {
-            var model = db.Movies.ToList();
-            if (model == null)
-                model = new List<Movie>();
+            //var model = db.Movies.ToList();
+            var model = GetList();
+            ViewBag.count = model.Count;
+            //ViewData["count"] = model.Count;
             return View(model);
         }
+
+        [NonAction]
+        public List<Movie> GetList(bool removeSession= true)
+        {
+            List<Movie> entities;
+            if (removeSession)
+                Session.Remove("movies");
+            if (Session["movies"] == null || removeSession)
+            {
+                entities = db.Movies.ToList();
+                Session["movies"] = entities;
+            }
+            else
+            {
+                entities = Session["movies"] as List<Movie>;
+            }
+            return entities;
+        }
+
+        public ActionResult GetMoviesFromSession()
+        {
+            var model = GetList(false);
+            ViewData["count"] = model.Count;
+            return View("Index", model);
+        }
+
         //[AcceptVerbs("GET")]
         [HttpGet]
         public ActionResult Add()
         {
-            return View();
+            ViewBag.Message = "Please enter movie information...";
+            //return View();
+            return new ViewResult();
         }
 
         //[AcceptVerbs("POST")]
         [HttpPost] // AcceptVerbs de kullanabilirdik
-        public RedirectToRouteResult Add(string Name, string ProductionYear, string BoxOfficeReturn)
+        public RedirectToRouteResult Add(string Name, int ProductionYear, string BoxOfficeReturn)
         {
             var entity = new Movie()
             {
                 Name = Name,
-                ProductionYear = ProductionYear,
+                ProductionYear = ProductionYear.ToString(),
                 BoxOfficeReturn = Convert.ToDouble(BoxOfficeReturn.Replace(",","."), CultureInfo.InvariantCulture)
             };
             db.Movies.Add(entity);
             db.SaveChanges();
+            TempData["Info"] = "Record successfully saved to database.";
             return RedirectToAction("Index");
         }
+
         [HttpGet]
-        public ActionResult Delete()
+        public ActionResult Edit(int? id)
         {
-            return View();
-        }
-        [HttpPost]
-        public RedirectToRouteResult Delete(string Name, int Id, string ProductionYear, string BoxOfficeReturn)
-        {
-            var list = db.Movies.ToList();
-         
-            foreach(var l in list)
+            if (!id.HasValue)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"Id is required!");
+            var model = db.Movies.Find(id.Value);
+            List<SelectListItem> years = new List<SelectListItem>(); // ProductionYear da dropdown list kullanma
+            SelectListItem year;
+            for (int i = DateTime.Now.Year; i >= 1990; i--)
             {
-                if(l.Id == Id)
-                {
-                    db.Movies.Remove(l);
-                    
-                }
+                year = new SelectListItem() { Value = i.ToString(), Text = i.ToString() };
+                years.Add(year);
             }
+            ViewBag.Years = new SelectList(years, "Value", "Text", model.ProductionYear);
+            return View(model);
+        }
+
+        [HttpPost]
+        //public ActionResult Edit(Movie movie, string BoxOfficeReturn)
+        public ActionResult Edit([Bind(Include = "Id,Name,ProductionYear")]Movie movie, string BoxOfficeReturn)
+        {
+            var entity = db.Movies.SingleOrDefault(e => e.Id == movie.Id);
+            entity.Name = movie.Name;
+            entity.ProductionYear = movie.ProductionYear;
+            entity.BoxOfficeReturn = Convert.ToDouble(BoxOfficeReturn.Replace(",", "."), CultureInfo.InvariantCulture);
+            db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToRoute(new { controller = "Movies", action = "Index"});
+        }
+
+
+        [HttpGet]
+        public ActionResult Delete(int? id)
+        {
+            if (!id.HasValue)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is required!");
+            var model = db.Movies.FirstOrDefault(e => e.Id == id.Value);
+            return View(model);
+        }
+        
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var entity = db.Movies.Find(id);
+            db.Movies.Remove(entity);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 

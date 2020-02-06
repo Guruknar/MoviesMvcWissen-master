@@ -204,11 +204,14 @@
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="test_1\TextFile1.txt" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Contexts\MoviesContext.cs" />
+    <Compile Include="Controllers\DemosController.cs" />
     <Compile Include="Controllers\DirectorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
@@ -250,6 +253,9 @@
     <Content Include="Views\Reviews\Index.cshtml" />
     <Content Include="Views\Movies\Add.cshtml" />
     <Content Include="Views\Movies\Delete.cshtml" />
+    <Content Include="Views\Demos\Razor1.cshtml" />
+    <Content Include="Views\Demos\Razor2.cshtml" />
+    <Content Include="Views\Movies\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

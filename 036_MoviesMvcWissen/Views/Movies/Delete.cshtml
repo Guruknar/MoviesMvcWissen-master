@@ -1,28 +1,29 @@
-﻿
+﻿@model Movie
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Movie";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<form action="~/Movies/Delete" method="post">
+
+@using (Html.BeginForm("Delete", "Movies", FormMethod.Post))
+{
+    @*@Html.DisplayForModel()*@
+    @Html.HiddenFor(e => e.Id)
     <div class="form-group">
-        <label for="tbName">Name</label>
-        <input type="text" class="form-control-sm" id="tbName" name="Name" />
+        <b>@Html.DisplayNameFor(e => e.Name): </b>
+        @Html.DisplayFor(e => e.Name)
     </div>
     <div class="form-group">
-        <label for="tbId">Id</label>
-        <input type="text" class="form-control-sm" id="tbId" name="Id" />
+        <b>@Html.LabelFor(e => e.BoxOfficeReturn):  </b>
+        @Html.DisplayFor(e => e.BoxOfficeReturn)
     </div>
     <div class="form-group">
-        <label for="tbProductionYear">Production Year</label>
-        <input type="text" class="form-control-sm" id="tbProductionYear" name="ProductionYear" />
+        <b>@Html.DisplayNameFor(e => e.ProductionYear):  </b>
+        @Html.DisplayFor(e => e.ProductionYear)
     </div>
-    <div class="form-group">
-        <label for="tbBoxOfficeReturn">Box Office Return</label>
-        <input type="text" class="form-control-sm" id="tbBoxOfficeReturn" name="BoxOfficeReturn" />
-    </div>
-    <button type="submit" class="btn btn-primary">Delete</button>
-    &nbsp;
-    <button type="reset" class="btn btn-info">Clear</button>
-</form>
+    <button type="submit" class="btn btn-success">Yes</button>
+    @:&nbsp;
+    @Html.ActionLink("No","Index", null, htmlAttributes : new { @class = "btn btn-danger"  })
+
+}

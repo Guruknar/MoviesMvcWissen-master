@@ -5,18 +5,34 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form action="~/Movies/Add">
+
+
+@*<form action="~/Movies/Add">
 <input type="submit" value="Add Movie" />
 </form>
 <form action="~/Movies/Delete">
     <input type="submit" value="Delete Movie" />
+</form>*@
+<form action="~/Movies/Add">
+    <button type="submit" class="btn btn-success">Add</button>
 </form>
-<a href="~/Movies/Add" >Add Movie</a>
-<a href="~/Movies/Delete">delete Movie</a>
+
+<a href="~/Movies/Add" >Add Movie</a>&nbsp;
+
+
 <br />
-<span style="color: chocolate;">@Model.Count() movies found</span>
-<table class="table" style="background-color: lightblue;">
+
+<label class="text-success">@TempData["Info"]</label>
+<br />
+
+@*<span style="color: chocolate;">@Model.Count() movies found</span>*@ @* bu da bir yol*@
+@*<span>@ViewData["count"] records found.</span>*@
+<span style="color: chocolate;">@ViewBag.count records found.</span>
+<table class="table" >
     <tr>
+        <td>
+
+        </td>
         <td>
             <b>Name</b>
         </td>
@@ -32,6 +48,10 @@
     {
         <tr>
             <td>
+                @Html.ActionLink("Edit", "Edit", new { id = movie.Id }) &nbsp;|&nbsp;
+                @Html.ActionLink("Delete", "Delete", new { id = movie.Id })
+            </td>
+            <td>
                 @movie.Name
             </td>
             <td>
@@ -41,7 +61,6 @@
                 @movie.BoxOfficeReturn
             </td>
         </tr>
-
     }
 
 
