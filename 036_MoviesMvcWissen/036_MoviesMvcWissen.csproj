@@ -249,6 +249,7 @@
     <Content Include="Views\Directors\Index.cshtml" />
     <Content Include="Views\Reviews\Index.cshtml" />
     <Content Include="Views\Movies\Add.cshtml" />
+    <Content Include="Views\Movies\Delete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

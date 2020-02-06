@@ -43,5 +43,25 @@ namespace _036_MoviesMvcWissen.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public ActionResult Delete()
+        {
+            return View();
+        }
+        [HttpPost]
+        public RedirectToRouteResult Delete(int Id)
+        {
+            var list = db.Movies.ToList();
+         
+            foreach(var l in list)
+            {
+                if(l.Id == Id)
+                {
+                    db.Movies.Remove(l);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }
