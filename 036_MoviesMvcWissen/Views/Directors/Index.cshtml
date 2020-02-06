@@ -1,0 +1,40 @@
+﻿@model List<_036_MoviesMvcWissen.Entities.Director>
+    @*DIRECTORRRRRS*@
+@{
+    ViewBag.Title = "Directors";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<span style="color: chocolate;">@Model.Count() movies found</span>
+<table class="table">
+    <tr>
+        <td>
+            <b>Name</b>
+        </td>
+        <td>
+            <b>Surname</b>
+        </td>
+        <td>
+            <b>Retired</b>
+        </td>
+    </tr>
+
+    @foreach(var director in Model)
+    {
+        <tr>
+            <td>
+                @director.Name
+            </td>
+            <td>
+                @director.Surname
+            </td>
+            <td>
+                @director.Retired
+            </td>
+        </tr>
+    }
+
+</table>
+
+
