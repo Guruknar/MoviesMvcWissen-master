@@ -114,9 +114,12 @@ namespace _036_MoviesMvcWissen.Controllers
             return View(model);
         }
         
+        [ActionName("Delete")]
         [HttpPost]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteConfirmed(int? id)
         {
+            if (!id.HasValue)//Gelemez de yaptık
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is required!");
             var entity = db.Movies.Find(id);
             db.Movies.Remove(entity);
             db.SaveChanges();
