@@ -49,7 +49,7 @@ namespace _036_MoviesMvcWissen.Controllers
             return View();
         }
         [HttpPost]
-        public RedirectToRouteResult Delete(int Id)
+        public RedirectToRouteResult Delete(string Name, int Id, string ProductionYear, string BoxOfficeReturn)
         {
             var list = db.Movies.ToList();
          
@@ -58,6 +58,7 @@ namespace _036_MoviesMvcWissen.Controllers
                 if(l.Id == Id)
                 {
                     db.Movies.Remove(l);
+                    
                 }
             }
             return RedirectToAction("Index");
