@@ -29,5 +29,31 @@ namespace _036_MoviesMvcWissen.Controllers
             return View();
         }
         #endregion
+
+        #region Route Values
+
+        public string FromRoute(int id)
+        {
+            return id.ToString();
+        }
+        // 9?name=çağil&lastname=alsaç
+        #endregion
+        #region Query String
+
+        //public string FromQueryString(string name, string surname)
+        //{
+        //    return name + " " + surname;
+        //}
+
+        public string FromQueryString()
+        {
+            var name = Request.QueryString["name"];
+            var surname = Request.QueryString["surname"];
+            return name + " " + surname;
+        }
+
+
+        #endregion
+
     }
 }

@@ -3,21 +3,29 @@
     ViewBag.Title = "Movies";
 }
 
+
+@*@Html.Action("Welcome")*@
+@{
+    Html.RenderAction("Welcome");
+}
+
 <h2>@ViewBag.Title</h2>
 
 
 
+
 @*<form action="~/Movies/Add">
-<input type="submit" value="Add Movie" />
-</form>
-<form action="~/Movies/Delete">
-    <input type="submit" value="Delete Movie" />
-</form>*@
+    <input type="submit" value="Add Movie" />
+    </form>
+    <form action="~/Movies/Delete">
+        <input type="submit" value="Delete Movie" />
+    </form>*@
+
 <form action="~/Movies/Add">
     <button type="submit" class="btn btn-success">Add</button>
 </form>
 
-<a href="~/Movies/Add" >Add Movie</a>&nbsp;
+<a href="~/Movies/Add">Add Movie</a>&nbsp; @*Yazı genellikle kullanılıyor add de*@
 
 
 <br />
@@ -28,11 +36,9 @@
 @*<span style="color: chocolate;">@Model.Count() movies found</span>*@ @* bu da bir yol*@
 @*<span>@ViewData["count"] records found.</span>*@
 <span style="color: chocolate;">@ViewBag.count records found.</span>
-<table class="table" >
+<table class="table">
     <tr>
-        <td>
-
-        </td>
+        <td></td>
         <td>
             <b>Name</b>
         </td>
@@ -48,8 +54,10 @@
     {
         <tr>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = movie.Id }) &nbsp;|&nbsp;
-                @Html.ActionLink("Delete", "Delete", new { id = movie.Id })
+                @Html.ActionLink(" ", "Details", new { id = movie.Id }, new { @class = "fa fa-question-circle fa-lg text-warning" })
+                &nbsp;
+                @Html.ActionLink(" ", "Edit", new { id = movie.Id }, new { @class = "fa fa-pencil-square fa-lg text-success" }) &nbsp;
+                @Html.ActionLink(" ", "Delete", new { id = movie.Id }, new { @class = "fa fa-trash fa-lg text-danger" })
             </td>
             <td>
                 @movie.Name

@@ -1,15 +1,61 @@
 ﻿@model Movie
 @{
+    /**/
+
     ViewBag.Title = "Delete Movie";
 }
 
 <h2>@ViewBag.Title</h2>
 
+@*Bunun yerine partial view kullanyoruz
+<div class="row">
+    <div class="col-md-2">
+        <b>@Html.DisplayNameFor(e => e.Name): </b>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(e => e.Name)
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
+        <b>@Html.DisplayNameFor(e => e.BoxOfficeReturn):  </b>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(e => e.BoxOfficeReturn)
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <b>@Html.DisplayNameFor(e => e.ProductionYear):  </b>
+    </div>
+    <div class="col-md-10">
+        @Html.DisplayFor(e => e.ProductionYear)
+    </div>
+</div>*@
+@Html.Partial("_Details", Model)
+<br />
 
 @using (Html.BeginForm("Delete", "Movies", FormMethod.Post))
 {
-    @*@Html.DisplayForModel()*@
     @Html.HiddenFor(e => e.Id)
+
+    <button type="submit" class="btn btn-success">Yes</button>
+    @:&nbsp;
+    @Html.ActionLink("No", "Index", null, htmlAttributes: new { @class = "btn btn-danger" })
+
+}
+
+
+
+@*Eski hali*@
+@*@using (Html.BeginForm("Delete", "Movies", FormMethod.Post))
+    {*@
+
+
+@*@Html.DisplayForModel()*@
+
+@*@Html.HiddenFor(e => e.Id)
     <div class="form-group">
         <b>@Html.DisplayNameFor(e => e.Name): </b>
         @Html.DisplayFor(e => e.Name)
@@ -22,8 +68,9 @@
         <b>@Html.DisplayNameFor(e => e.ProductionYear):  </b>
         @Html.DisplayFor(e => e.ProductionYear)
     </div>
+
     <button type="submit" class="btn btn-success">Yes</button>
     @:&nbsp;
-    @Html.ActionLink("No","Index", null, htmlAttributes : new { @class = "btn btn-danger"  })
+    @Html.ActionLink("No", "Index", null, htmlAttributes: new { @class = "btn btn-danger" })*@
 
-}
+@*}*@
