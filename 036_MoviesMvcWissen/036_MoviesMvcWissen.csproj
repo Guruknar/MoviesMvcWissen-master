@@ -230,11 +230,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ButtonHtmlHelpers.cs" />
     <Compile Include="Migrations\202002051407477_v1.cs" />
     <Compile Include="Migrations\202002051407477_v1.designer.cs">
       <DependentUpon>202002051407477_v1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\DirectorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -278,7 +280,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Reviews\" />
   </ItemGroup>
   <ItemGroup>

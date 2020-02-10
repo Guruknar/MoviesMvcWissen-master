@@ -1,7 +1,10 @@
 ﻿using _036_MoviesMvcWissen.Contexts;
 using _036_MoviesMvcWissen.Entities;
+using _036_MoviesMvcWissen.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -54,22 +57,35 @@ namespace _036_MoviesMvcWissen.Controllers
         public ActionResult Add()
         {
             ViewBag.Message = "Please enter movie information...";
-            //return View();
-            return new ViewResult();
+            var directors = db.Directors.ToList().Select(e => new SelectListItem()
+            {
+                Value = e.Id.ToString(),
+                Text = e.Name + " " + e.Surname
+            }).ToList();
+            ViewData["directors"] = new MultiSelectList(directors, "Value", "Text");
+
+            return View();
         }
 
         //[AcceptVerbs("POST")]
         [HttpPost] // AcceptVerbs de kullanabilirdik
-        public RedirectToRouteResult Add(string Name, int ProductionYear, string BoxOfficeReturn)
+        public RedirectToRouteResult Add(string Name, int ProductionYear, string BoxOfficeReturn, List<int> Directors)
         {
             var entity = new Movie()
             {
+                Id = 0,
                 Name = Name,
                 ProductionYear = ProductionYear.ToString(),
-                BoxOfficeReturn = Convert.ToDouble(BoxOfficeReturn.Replace(",","."), CultureInfo.InvariantCulture)
+                BoxOfficeReturn = Convert.ToDouble(BoxOfficeReturn.Replace(",","."), CultureInfo.InvariantCulture),
             };
+            entity.MovieDirectors = Directors.Select(e => new MovieDirector()
+            {
+                MovieId = entity.Id,
+                DirectorId = e
+            }).ToList();
             db.Movies.Add(entity);
             db.SaveChanges();
+            Debug.WriteLine("Added Entity Id: " + entity.Id);
             TempData["Info"] = "Record successfully added to database.";
             return RedirectToAction("Index");
         }
@@ -88,18 +104,44 @@ namespace _036_MoviesMvcWissen.Controllers
                 years.Add(year);
             }
             ViewBag.Years = new SelectList(years, "Value", "Text", model.ProductionYear);
+
+            var directors = db.Directors.Select(e => new DirectorModel()
+            {
+                Id = e.Id,
+                FullName = e.Name + " " + e.Surname
+            }).ToList();
+            var directorIds = model.MovieDirectors.Select(e => e.DirectorId).ToList();
+            ViewBag.directors = new MultiSelectList(directors, "Id", "FullName", directorIds);
+
             return View(model);
         }
 
         [HttpPost]
         //public ActionResult Edit(Movie movie, string BoxOfficeReturn)
-        public ActionResult Edit([Bind(Include = "Id,Name,ProductionYear")]Movie movie, string BoxOfficeReturn)
+        public ActionResult Edit([Bind(Include = "Id,Name,ProductionYear")]Movie movie, string BoxOfficeReturn, List<int> directorIds)
         {
             var entity = db.Movies.SingleOrDefault(e => e.Id == movie.Id);
             entity.Name = movie.Name;
             entity.ProductionYear = movie.ProductionYear;
             entity.BoxOfficeReturn = Convert.ToDouble(BoxOfficeReturn.Replace(",", "."), CultureInfo.InvariantCulture);
-            db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+
+            entity.MovieDirectors = new List<MovieDirector>();
+            var movieDirectors = db.MovieDirectors.Where(e => e.MovieId == movie.Id).ToList(); // aşina
+            foreach(var movieDirector in movieDirectors)
+            {
+                db.MovieDirectors.Remove(movieDirector);
+            }
+            foreach(var directorId in directorIds)
+            {
+                var movieDirector = new MovieDirector()
+                {
+                    MovieId = movie.Id,
+                    DirectorId = directorId
+                };
+                entity.MovieDirectors.Add(movieDirector);
+            }
+            db.Entry(entity).State = EntityState.Modified;
+
             db.SaveChanges();
             TempData["Info"] = "Record successfully updated to database.";
             return RedirectToRoute(new { controller = "Movies", action = "Index"});
@@ -122,6 +164,11 @@ namespace _036_MoviesMvcWissen.Controllers
             if (!id.HasValue)//Gelemez de yaptık
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is required!");
             var entity = db.Movies.Find(id);
+            var movieDirectors = db.MovieDirectors.Where(s => s.MovieId == id.Value);
+            foreach(var item in movieDirectors)
+            {
+                db.Entry(item).State = EntityState.Deleted;
+            }
             db.Movies.Remove(entity);
             db.SaveChanges();
             TempData["Info"] = "Record successfully deleted from database.";

@@ -2,6 +2,7 @@
 @*ADD SAYFASII*@
 @{
     ViewBag.Title = "Add Movie";
+    var directors = (MultiSelectList)ViewData["directors"];
 }
 
 <h2>@ViewBag.Title</h2>
@@ -19,10 +20,10 @@
         <label for="ddlProductionYear">Production Year  </label>&nbsp;&nbsp;
         <select id="ddlProductionYear" name="ProductionYear" class="form-control-sm">
             @*<option value="2020" selected>2020</option>
-            <option value="2019">2019</option>*@
+                <option value="2019">2019</option>*@
             @for (int i = DateTime.Now.Year; i >= 1990; i--)
             {
-                <option value="@i" >@i</option>
+                <option value="@i">@i</option>
             }
         </select>
     </div>
@@ -30,6 +31,19 @@
         <label for="tbBoxOfficeReturn">Box Office Return </label>
         <input type="text" class="form-control-sm" id="tbBoxOfficeReturn" name="BoxOfficeReturn" />
     </div>
+
+    <div class="form-group">
+        <label for="ddlDirectos">Directors</label>
+        <select id="ddlDirectos" class="form-control" name="Directors" multiple>
+            @foreach(var director in directors)
+            {
+                <option value="@director.Value">@director.Text</option>
+            }
+        </select>
+        @*@Html.ListBox()*@
+    </div>
+
+
     <button type="submit" class="btn btn-primary">Save</button>
     &nbsp;
     <button type="reset" class="btn btn-info">Clear</button>
