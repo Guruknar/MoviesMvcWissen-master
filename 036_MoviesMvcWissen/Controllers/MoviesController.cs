@@ -1,6 +1,7 @@
 ﻿using _036_MoviesMvcWissen.Contexts;
 using _036_MoviesMvcWissen.Entities;
 using _036_MoviesMvcWissen.Models;
+using _036_MoviesMvcWissen.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,17 +19,109 @@ namespace _036_MoviesMvcWissen.Controllers
         MoviesContext db = new MoviesContext();
 
         // GET: Movies
-        public ViewResult Index()
+        //public ViewResult Index() // 1
+        public ViewResult Index(MoviesIndexViewModel moviesIndexViewModel) // 2
         {
-            //var model = db.Movies.ToList();
-            var model = GetList();
-            ViewBag.count = model.Count;
+            // 1
+            ////var model = db.Movies.ToList();
+            //var model = GetList();
+            ////ViewBag.count = model.Count;
             //ViewData["count"] = model.Count;
-            return View(model);
+            //return View(model);
+
+            // 2
+            var years = new List<SelectListItem>();
+            //years.Add(new SelectListItem()
+            //{
+            //    Value = "",
+            //    Text = "-- All --"
+            //});
+            for (int i = DateTime.Now.Year; i >= 2000; i--)
+            {
+                years.Add(new SelectListItem()
+                {
+                    Value = i.ToString(),
+                    Text = i.ToString()
+                });
+            }
+            if (moviesIndexViewModel == null)
+            {
+                moviesIndexViewModel = new MoviesIndexViewModel();
+            }
+            if (String.IsNullOrWhiteSpace(moviesIndexViewModel.YearId))
+            {
+                moviesIndexViewModel.Movies = GetList();
+            }
+            else
+            {
+                moviesIndexViewModel.Movies = GetList().Where(e => e.ProductionYear == moviesIndexViewModel.YearId).ToList();
+            }
+            moviesIndexViewModel.Years = new SelectList(years, "Value", "Text", moviesIndexViewModel.YearId);
+            return View(moviesIndexViewModel);
+        }
+
+        public ActionResult List(MoviesIndexViewModel moviesIndexViewModel)// son yaptığımız 16/17 arası
+        {
+            if (moviesIndexViewModel == null)
+                moviesIndexViewModel = new MoviesIndexViewModel();
+
+            var movies = db.Movies.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(moviesIndexViewModel.Name))
+            {
+                movies = movies.Where(e => e.Name.Contains(moviesIndexViewModel.Name));
+            }
+            if(!string.IsNullOrWhiteSpace(moviesIndexViewModel.YearId))
+            {
+                movies = movies.Where(e => e.ProductionYear == moviesIndexViewModel.YearId);
+            }
+
+            //if(!string.IsNullOrWhiteSpace(moviesIndexViewModel.Min) && !string.IsNullOrWhiteSpace(moviesIndexViewModel.Max))
+            //{
+            //    double minValue = 0;
+            //    double maxValue = Convert.ToDouble(moviesIndexViewModel.Max);
+            //    if (double.TryParse(moviesIndexViewModel.Min,out minValue))
+            //    {
+            //        movies = movies.Where(e => e.BoxOfficeReturn >= minValue & e.BoxOfficeReturn <= maxValue);
+            //    }
+            //}
+            if (!string.IsNullOrWhiteSpace(moviesIndexViewModel.Min))
+            {
+                double minValue = 0;
+                if (double.TryParse(moviesIndexViewModel.Min, out minValue))
+                {
+                    movies = movies.Where(e => e.BoxOfficeReturn <= minValue);
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(moviesIndexViewModel.Max))
+            {
+                double maxValue = 0;
+                if (double.TryParse(moviesIndexViewModel.Max, out maxValue))
+                {
+                    movies = movies.Where(e => e.BoxOfficeReturn <= maxValue);
+                }
+            }
+
+
+            moviesIndexViewModel.Movies = movies.ToList();
+
+
+            var years = new List<SelectListItem>();
+            for (int i = DateTime.Now.Year; i >= 1960; i--)
+            {
+                years.Add(new SelectListItem()
+                {
+                    Value = i.ToString(),
+                    Text = i.ToString()
+                });
+            }
+
+            moviesIndexViewModel.Years = new SelectList(years, "Value", "Text", moviesIndexViewModel.YearId);
+            return View(moviesIndexViewModel);
         }
 
         [NonAction]
-        public List<Movie> GetList(bool removeSession= true)
+        public List<Movie> GetList(bool removeSession = true)
         {
             List<Movie> entities;
             if (removeSession)
@@ -48,11 +141,10 @@ namespace _036_MoviesMvcWissen.Controllers
         public ActionResult GetMoviesFromSession()
         {
             var model = GetList(false);
-            ViewData["count"] = model.Count;
+            ViewBag.count = model.Count;
             return View("Index", model);
         }
 
-        //[AcceptVerbs("GET")]
         [HttpGet]
         public ActionResult Add()
         {
@@ -63,12 +155,10 @@ namespace _036_MoviesMvcWissen.Controllers
                 Text = e.Name + " " + e.Surname
             }).ToList();
             ViewData["directors"] = new MultiSelectList(directors, "Value", "Text");
-
             return View();
         }
 
-        //[AcceptVerbs("POST")]
-        [HttpPost] // AcceptVerbs de kullanabilirdik
+        [HttpPost]
         public RedirectToRouteResult Add(string Name, int ProductionYear, string BoxOfficeReturn, List<int> Directors)
         {
             var entity = new Movie()
@@ -76,7 +166,7 @@ namespace _036_MoviesMvcWissen.Controllers
                 Id = 0,
                 Name = Name,
                 ProductionYear = ProductionYear.ToString(),
-                BoxOfficeReturn = Convert.ToDouble(BoxOfficeReturn.Replace(",","."), CultureInfo.InvariantCulture),
+                BoxOfficeReturn = Convert.ToDouble(BoxOfficeReturn.Replace(",", "."), CultureInfo.InvariantCulture)
             };
             entity.MovieDirectors = Directors.Select(e => new MovieDirector()
             {
@@ -90,21 +180,19 @@ namespace _036_MoviesMvcWissen.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
         public ActionResult Edit(int? id)
         {
             if (!id.HasValue)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,"Id is required!");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is required!");
             var model = db.Movies.Find(id.Value);
-            List<SelectListItem> years = new List<SelectListItem>(); // ProductionYear da dropdown list kullanma
+            List<SelectListItem> years = new List<SelectListItem>();
             SelectListItem year;
-            for (int i = DateTime.Now.Year; i >= 1990; i--)
+            for (int i = DateTime.Now.Year; i >= 2000; i--)
             {
                 year = new SelectListItem() { Value = i.ToString(), Text = i.ToString() };
                 years.Add(year);
             }
             ViewBag.Years = new SelectList(years, "Value", "Text", model.ProductionYear);
-
             var directors = db.Directors.Select(e => new DirectorModel()
             {
                 Id = e.Id,
@@ -112,26 +200,23 @@ namespace _036_MoviesMvcWissen.Controllers
             }).ToList();
             var directorIds = model.MovieDirectors.Select(e => e.DirectorId).ToList();
             ViewBag.directors = new MultiSelectList(directors, "Id", "FullName", directorIds);
-
             return View(model);
         }
 
         [HttpPost]
-        //public ActionResult Edit(Movie movie, string BoxOfficeReturn)
-        public ActionResult Edit([Bind(Include = "Id,Name,ProductionYear")]Movie movie, string BoxOfficeReturn, List<int> directorIds)
+        public ActionResult Edit([Bind(Include = "Id, Name, ProductionYear")]Movie movie, string BoxOfficeReturn, List<int> directorIds)
         {
             var entity = db.Movies.SingleOrDefault(e => e.Id == movie.Id);
             entity.Name = movie.Name;
             entity.ProductionYear = movie.ProductionYear;
             entity.BoxOfficeReturn = Convert.ToDouble(BoxOfficeReturn.Replace(",", "."), CultureInfo.InvariantCulture);
-
             entity.MovieDirectors = new List<MovieDirector>();
-            var movieDirectors = db.MovieDirectors.Where(e => e.MovieId == movie.Id).ToList(); // aşina
-            foreach(var movieDirector in movieDirectors)
+            var movieDirectors = db.MovieDirectors.Where(e => e.MovieId == movie.Id).ToList();
+            foreach (var movieDirector in movieDirectors)
             {
                 db.MovieDirectors.Remove(movieDirector);
             }
-            foreach(var directorId in directorIds)
+            foreach (var directorId in directorIds)
             {
                 var movieDirector = new MovieDirector()
                 {
@@ -141,12 +226,10 @@ namespace _036_MoviesMvcWissen.Controllers
                 entity.MovieDirectors.Add(movieDirector);
             }
             db.Entry(entity).State = EntityState.Modified;
-
             db.SaveChanges();
-            TempData["Info"] = "Record successfully updated to database.";
-            return RedirectToRoute(new { controller = "Movies", action = "Index"});
+            TempData["Info"] = "Record successfully updated in database.";
+            return RedirectToRoute(new { controller = "Movies", action = "Index" });
         }
-
 
         [HttpGet]
         public ActionResult Delete(int? id)
@@ -156,26 +239,20 @@ namespace _036_MoviesMvcWissen.Controllers
             var model = db.Movies.FirstOrDefault(e => e.Id == id.Value);
             return View(model);
         }
-        
+
         [ActionName("Delete")]
         [HttpPost]
         public ActionResult DeleteConfirmed(int? id)
         {
-            if (!id.HasValue)//Gelemez de yaptık
+            if (!id.HasValue)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Id is required!");
             var entity = db.Movies.Find(id);
-            var movieDirectors = db.MovieDirectors.Where(s => s.MovieId == id.Value);
-            foreach(var item in movieDirectors)
-            {
-                db.Entry(item).State = EntityState.Deleted;
-            }
             db.Movies.Remove(entity);
             db.SaveChanges();
             TempData["Info"] = "Record successfully deleted from database.";
             return RedirectToAction("Index");
         }
 
-   
         public ActionResult Details(int? id)
         {
             if (!id.HasValue)
@@ -190,7 +267,5 @@ namespace _036_MoviesMvcWissen.Controllers
             //return Content(result);
             return PartialView("_Welcome", result);
         }
-
-
     }
 }

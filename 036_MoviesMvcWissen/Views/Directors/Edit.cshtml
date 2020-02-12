@@ -2,6 +2,11 @@
 
 @{
     ViewBag.Title = "Edit";
+
+    var movies = ViewBag.Movies as MultiSelectList;
+
+    //Html.EnableUnobtrusiveJavaScript(false);
+    //Html.EnableClientValidation(false);
 }
 
 <h2>Edit</h2>
@@ -9,11 +14,14 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Director</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
@@ -37,9 +45,14 @@
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.Retired)
-                    @Html.ValidationMessageFor(model => model.Retired, "", new { @class = "text-danger" })
+                    @*@Html.ValidationMessageFor(model => model.Retired, "", new { @class = "text-danger" })*@
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("ddlMovies", "Movies")
+            @Html.ListBox("movieIds", movies, new { @class = "form-control", id = "ddlMovies" })
         </div>
 
         <div class="form-group">
