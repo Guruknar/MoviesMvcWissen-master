@@ -99,7 +99,11 @@ namespace _036_MoviesMvcWissen.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.Movies = new SelectList(db.Movies.Select(e => new SelectListItem() // select list
+            {
+                Value = e.Id.ToString(),
+                Text = e.Name
+            }).ToList(),"Value","Text");
             return View(director);
         }
 
