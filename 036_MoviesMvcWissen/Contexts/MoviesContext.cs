@@ -20,6 +20,9 @@ namespace _036_MoviesMvcWissen.Contexts
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<MovieDirector> MovieDirectors { get; set; }
 
-        public System.Data.Entity.DbSet<_036_MoviesMvcWissen.Models.Demos.Templates.Person> People { get; set; }
+        public System.Data.Entity.DbSet<_036_MoviesMvcWissen.Models.Demos.Templates.PersonModel> People { get; set; }
     }
 }
+
+
+
