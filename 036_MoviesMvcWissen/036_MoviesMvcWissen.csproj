@@ -552,6 +552,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Demos\Templates\PersonModel.cs" />
     <Compile Include="Models\DirectorModel.cs" />
+    <Compile Include="Models\ViewModels\DemosGetPeopleAjaxViewModel.cs" />
     <Compile Include="Models\ViewModels\DirectorEditViewModel.cs" />
     <Compile Include="Models\ViewModels\DirectorsIndexViewModel.cs" />
     <Compile Include="Models\ViewModels\MoviesIndexViewModel.cs" />
@@ -609,6 +610,9 @@
     <Content Include="Views\Reviews\Index.cshtml" />
     <Content Include="Views\Demos\DivideByZero.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Demos\GetPeopleAjax.cshtml" />
+    <Content Include="Views\Demos\_PeopleList.cshtml" />
+    <Content Include="Views\Demos\AddPersonAjaxSil.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

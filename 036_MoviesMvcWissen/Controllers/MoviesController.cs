@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace _036_MoviesMvcWissen.Controllers
 {
@@ -60,7 +61,9 @@ namespace _036_MoviesMvcWissen.Controllers
             return View(moviesIndexViewModel);
         }
 
-        public ActionResult List(MoviesIndexViewModel moviesIndexViewModel)// son yaptığımız 16/17 arası
+
+        [OutputCache(Duration = 60, Location = OutputCacheLocation.ServerAndClient, NoStore = true, VaryByParam = "*")] // VaryByParam = "Name;Min;Max" , VaryByParam = "none"
+        public ActionResult List(MoviesIndexViewModel moviesIndexViewModel)// son yaptığımız 16:00-17:00 (Hüseyin)
         {
             if (moviesIndexViewModel == null)
                 moviesIndexViewModel = new MoviesIndexViewModel();
@@ -119,6 +122,7 @@ namespace _036_MoviesMvcWissen.Controllers
             moviesIndexViewModel.Years = new SelectList(years, "Value", "Text", moviesIndexViewModel.YearId);
             return View(moviesIndexViewModel);
         }
+
 
         [NonAction]
         public List<Movie> GetList(bool removeSession = true)
