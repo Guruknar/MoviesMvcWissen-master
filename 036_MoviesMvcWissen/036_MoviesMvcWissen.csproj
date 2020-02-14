@@ -517,11 +517,14 @@
     <Compile Include="Controllers\DemosController.cs" />
     <Compile Include="Controllers\DirectorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
+    <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Entities\Director.cs" />
     <Compile Include="Entities\Movie.cs" />
     <Compile Include="Entities\MovieDirector.cs" />
     <Compile Include="Entities\Review.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -538,6 +541,14 @@
     <Compile Include="Migrations\202002131244279_v3.designer.cs">
       <DependentUpon>202002131244279_v3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002141352069_v31.cs" />
+    <Compile Include="Migrations\202002141352069_v31.designer.cs">
+      <DependentUpon>202002141352069_v31.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202002141401159_v311.cs" />
+    <Compile Include="Migrations\202002141401159_v311.designer.cs">
+      <DependentUpon>202002141401159_v311.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Demos\Templates\PersonModel.cs" />
     <Compile Include="Models\DirectorModel.cs" />
@@ -546,6 +557,7 @@
     <Compile Include="Models\ViewModels\MoviesIndexViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validations\FluentValidation\DirectorValidator.cs" />
+    <Compile Include="Validations\FluentValidation\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -589,6 +601,14 @@
     <Content Include="Views\Demos\AddPerson.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PersonModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Reviews\Create.cshtml" />
+    <Content Include="Views\Reviews\Delete.cshtml" />
+    <Content Include="Views\Reviews\Details.cshtml" />
+    <Content Include="Views\Reviews\Edit.cshtml" />
+    <Content Include="Views\Reviews\Index.cshtml" />
+    <Content Include="Views\Demos\DivideByZero.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -598,7 +618,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Reviews\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202002051407477_v1.resx">
@@ -609,6 +628,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002131244279_v3.resx">
       <DependentUpon>202002131244279_v3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002141352069_v31.resx">
+      <DependentUpon>202002141352069_v31.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002141401159_v311.resx">
+      <DependentUpon>202002141401159_v311.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

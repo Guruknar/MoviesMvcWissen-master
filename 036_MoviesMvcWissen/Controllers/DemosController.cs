@@ -112,7 +112,21 @@ namespace _036_MoviesMvcWissen.Controllers
             Session["people"] = people;
             return RedirectToAction("GetPeople");
         }
-        
+
+        #endregion
+
+        #region HandleError Action Filter
+        [HandleError]
+        public ActionResult DivideByZero()
+        {
+            var no1 = 14;
+            var no2 = 0;
+            var result = no1 / no2;
+            ViewBag.Result = result;
+            return View();
+        }
+
+
         #endregion
 
     }

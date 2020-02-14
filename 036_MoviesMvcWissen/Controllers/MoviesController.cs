@@ -260,7 +260,7 @@ namespace _036_MoviesMvcWissen.Controllers
             var model = db.Movies.Find(id.Value);
             return View(model);
         }
-
+        [ChildActionOnly] // ***
         public ActionResult Welcome()
         {
             var result = "Welcome to Movies MVC";
