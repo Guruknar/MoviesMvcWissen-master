@@ -1,7 +1,23 @@
 ﻿@model IEnumerable<_036_MoviesMvcWissen.Models.Demos.Templates.PersonModel>
 
+@{ 
+    var ajaxOptions = new AjaxOptions()
+    {
+        AllowCache = false,
+        /*Url = Url.Action("DeletePersonAjax"),*/ // actionlink kullandığımızda belirtmeleri yapıtığımızdan url ye gerek yok
+        UpdateTargetId = "div_users",
+        InsertionMode = InsertionMode.Replace,
+        Confirm = "Are you sure?",
+        OnSuccess = "successful",
+        OnFailure = "failure"
+    };
+}
+
 <table class="table">
     <tr>
+        <th>
+
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.FullName)
         </th>
@@ -20,6 +36,9 @@
     {
         <tr>
             <td>
+                @Ajax.ActionLink("Delete", "DeletePersonAjax","Demos", new { id = item.Id}, ajaxOptions)@*burası*@
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
@@ -35,4 +54,17 @@
     }
 
 </table>
+
+<label id="lMessage" style="color:red;"></label>
+
+<script>
+    function successful() {
+        //alert("Operation successful.");
+        console.log("Operation successful.");
+        $("#lMessage").text("Operation successful.");
+    }
+    function failure() {
+        $("#lMessage").text("Operation failed.");
+    }
+</script>
 

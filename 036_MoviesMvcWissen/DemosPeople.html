@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>People | jQuery AJAX</title>
+    <script src="Scripts/jquery-3.0.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.getJSON("./Demos/GetPeopleJson", function (response) {
+                $.each(response, function (i, data) {
+                    $("#ul_users").append("<li>Id: " + data.Id + " -Full Name: " + data.FullName + " - Identity No: " + data.IdentityNo + " - University Graduated: " + (data.GraduatedFromUniversity == true ? "Yes" : "No") + " - BirthDate: " + data.BirthDate + "</li>");
+                });
+            });
+        })
+    </script>
+</head>
+<body>
+    <h2>People</h2>
+    <div id="div_users">
+        <ul id="ul_users">
+            
+
+        </ul>
+    </div>
+
+</body>
+</html>

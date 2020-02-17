@@ -1,11 +1,21 @@
 ﻿@model _036_MoviesMvcWissen.Models.ViewModels.DemosGetPeopleAjaxViewModel
 @{
     ViewBag.Title = "GetPeopleAjax";
-}
 
+    var ajaxOptions = new AjaxOptions()
+    {
+        AllowCache = false,
+        Url = Url.Action("AddPersonAjax","Demos"), /*Post etmek istediğimiz yeri söylüyoruz*/
+        HttpMethod = "POST",
+        UpdateTargetId = "div_users", /*update(yenilenecek olan kısım ekleme yaptıktan sonra) yapılacak targetın ıd si gerekli, bütün html elemanları olur*/
+        InsertionMode = InsertionMode.Replace
+    };
+}
+@*GetPeopleAjax, _PeopleList, DemosController*@
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("AddPersonAJAX","Demos",FormMethod.Post))
+@*@using (Html.BeginForm("AddPersonAJAX","Demos",FormMethod.Post))*@
+@using (Ajax.BeginForm(ajaxOptions))
 {
     <div class="form-horizontal">
         <h4>PersonModel</h4>
@@ -49,8 +59,8 @@
 }
 
 <hr />
-
-@Html.Partial("_PeopleList", Model.PeopleModel)
-
+<div id="div_users">
+    @Html.Partial("_PeopleList", Model.PeopleModel)
+</div>
 
 

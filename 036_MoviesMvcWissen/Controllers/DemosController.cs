@@ -154,6 +154,22 @@ namespace _036_MoviesMvcWissen.Controllers
                         IdentityNo = "654321",
                         GraduatedFromUniversity = false,
                         BirthDate = DateTime.Parse("25.05.2015")
+                    },
+                     new PersonModel()
+                    {
+                        Id = 3,
+                        FullName ="Ugur Karasar",
+                        IdentityNo = "333333",
+                        GraduatedFromUniversity = true,
+                        BirthDate = DateTime.Parse("14.01.1994")
+                    },
+                      new PersonModel()
+                    {
+                        Id = 4,
+                        FullName ="Deneme Test",
+                        IdentityNo = "000000",
+                        GraduatedFromUniversity = false,
+                        BirthDate = DateTime.Parse("17.02.2020")
                     }
                 };
                 Session["people"] = people;
@@ -173,17 +189,93 @@ namespace _036_MoviesMvcWissen.Controllers
         [HttpPost]
         public ActionResult AddPersonAjax(PersonModel personModel)
         {
-            Thread.Sleep(3000);
+            //Thread.Sleep(3000);
             List<PersonModel> people = Session["people"] as List<PersonModel>;
             personModel.Id = people.Max(e => e.Id) + 1;
             people.Add(personModel);
             Session["people"] = people;
-            return RedirectToAction("GetPeopleAjax");
+            //return RedirectToAction("GetPeopleAjax"); // Ajax sadece belli bir yeri güncelleme redirect ile olmuyor
+
+            //var model = new DemosGetPeopleAjaxViewModel()// 1.  yol bütün view i döndüğü için bu da ynalış
+            //{
+            //    PeopleModel = people
+            //};
+            //return View("GetPeopleAjax", people);
+
+            return PartialView("_PeopleList",people);
+
+        }
+        public ActionResult DeletePersonAjax(int? id)
+        {
+            //Thread.Sleep(3000);
+            List<PersonModel> people = Session["people"] as List<PersonModel>;
+            //PersonModel person = people.SingleOrDefault(e => e.Id == id);
+            var person = people.FirstOrDefault(e => e.Id == id);
+            people.Remove(person);
+            Session["people"] = people;
+            return PartialView("_PeopleList", people);
+            
+        }
+        // GetPeopleAjax kısmı buraya kadar
+
+        //DemosPeople.html
+        public JsonResult GetPeopleJson()
+        {
+            var people = new List<PersonModel>()
+            {
+                 new PersonModel()
+                    {
+                        Id = 1,
+                        FullName ="Çağıl Alsaç",
+                        IdentityNo = "123456",
+                        GraduatedFromUniversity = true,
+                        BirthDate = DateTime.Parse("19.06.1980")
+                    },
+                    new PersonModel()
+                    {
+                        Id = 2,
+                        FullName ="Leo Alsaç",
+                        IdentityNo = "654321",
+                        GraduatedFromUniversity = false,
+                        BirthDate = DateTime.Parse("25.05.2015")
+                    },
+                     new PersonModel()
+                    {
+                        Id = 3,
+                        FullName ="Ugur Karasar",
+                        IdentityNo = "333333",
+                        GraduatedFromUniversity = true,
+                        BirthDate = DateTime.Parse("14.01.1994")
+                    },
+                      new PersonModel()
+                    {
+                        Id = 4,
+                        FullName ="Deneme Test",
+                        IdentityNo = "000000",
+                        GraduatedFromUniversity = false,
+                        BirthDate = DateTime.Parse("17.02.2020")
+                    }
+            };
+
+            var model = people.Select(e => new PersonModelClientModel()
+            {
+                Id = e.Id,
+                FullName = e.FullName,
+                IdentityNo = e.IdentityNo,
+                GraduatedFromUniversity = e.GraduatedFromUniversity,
+                BirthDate = e.BirthDate.HasValue ? e.BirthDate.Value.ToShortDateString() : ""
+            });
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+
         }
 
+        public RedirectResult GetPeopleHtml()
+        {
+            return RedirectPermanent("~/DemosPeople.html");
+        }
 
         #endregion
-
 
     }
 }
