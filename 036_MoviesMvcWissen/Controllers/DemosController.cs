@@ -216,9 +216,9 @@ namespace _036_MoviesMvcWissen.Controllers
             return PartialView("_PeopleList", people);
             
         }
-        // GetPeopleAjax kısmı buraya kadar
+        // GetPeopleAjax kısmı buraya kadar //Ajax yapma yöntemi ilk mvc yukarıdaki
 
-        //DemosPeople.html
+        //DemosPeople.html // 2. cisi ayrı html de
         public JsonResult GetPeopleJson()
         {
             var people = new List<PersonModel>()
