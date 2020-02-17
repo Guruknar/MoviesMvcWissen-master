@@ -5,7 +5,7 @@
     var ajaxOptions = new AjaxOptions()
     {
         AllowCache = false,
-        Url = Url.Action("AddPersonAjax","Demos"), /*Post etmek istediğimiz yeri söylüyoruz*/
+        Url = Url.Action("AddPersonAjax", "Demos"), /*Post etmek istediğimiz yeri söylüyoruz*/
         HttpMethod = "POST",
         UpdateTargetId = "div_users", /*update(yenilenecek olan kısım ekleme yaptıktan sonra) yapılacak targetın ıd si gerekli, bütün html elemanları olur*/
         InsertionMode = InsertionMode.Replace
@@ -64,3 +64,9 @@
 </div>
 
 
+
+
+@section ajaxScript
+{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}

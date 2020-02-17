@@ -219,9 +219,11 @@ namespace _036_MoviesMvcWissen.Controllers
         // GetPeopleAjax kısmı buraya kadar //Ajax yapma yöntemi ilk mvc yukarıdaki
 
         //DemosPeople.html // 2. cisi ayrı html de
-        public JsonResult GetPeopleJson()
+        public ActionResult GetPeopleJson()
         {
-            var people = new List<PersonModel>()
+            if(Request.IsAjaxRequest())
+            {
+                var people = new List<PersonModel>()
             {
                  new PersonModel()
                     {
@@ -257,16 +259,19 @@ namespace _036_MoviesMvcWissen.Controllers
                     }
             };
 
-            var model = people.Select(e => new PersonModelClientModel()
-            {
-                Id = e.Id,
-                FullName = e.FullName,
-                IdentityNo = e.IdentityNo,
-                GraduatedFromUniversity = e.GraduatedFromUniversity,
-                BirthDate = e.BirthDate.HasValue ? e.BirthDate.Value.ToShortDateString() : ""
-            });
+                var model = people.Select(e => new PersonModelClientModel()
+                {
+                    Id = e.Id,
+                    FullName = e.FullName,
+                    IdentityNo = e.IdentityNo,
+                    GraduatedFromUniversity = e.GraduatedFromUniversity,
+                    BirthDate = e.BirthDate.HasValue ? e.BirthDate.Value.ToShortDateString() : ""
+                });
 
-            return Json(model, JsonRequestBehavior.AllowGet);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+
+            return new EmptyResult();
 
         }
 
