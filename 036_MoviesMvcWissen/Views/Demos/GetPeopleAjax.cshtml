@@ -12,7 +12,7 @@
     };
 }
 @*GetPeopleAjax, _PeopleList, DemosController*@
-<h2>@ViewBag.Title</h2>
+<h2 class="myh2">@ViewBag.Title</h2>
 
 @*@using (Html.BeginForm("AddPersonAJAX","Demos",FormMethod.Post))*@
 @using (Ajax.BeginForm(ajaxOptions))
@@ -69,4 +69,13 @@
 @section ajaxScript
 {
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}
+
+@section myh2style
+{
+    <style>
+        .myh2{
+            color: red;
+        }
+    </style>    
 }
