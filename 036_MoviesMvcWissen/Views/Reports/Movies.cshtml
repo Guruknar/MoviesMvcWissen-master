@@ -1,87 +1,86 @@
-﻿@model IEnumerable<_036_MoviesMvcWissen.Models.MovieReportModel>
+﻿@model _036_MoviesMvcWissen.Models.ViewModels.ReportsMoviesViewModel
 
 @{
     ViewBag.Title = "Movie Report";
 }
 
+<p>
+    @Model.RecordCount
+    <br />
+    @Model.RecordsPerPageCount
+    <br />
+    @Model.PageNumber
+</p>
+
 <h2>@ViewBag.Title</h2>
 
+<div style="width: 100%; overflow-x:auto;">
+    <table class="table">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.MovieId)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieReports.FirstOrDefault().MovieName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieReports.FirstOrDefault().MovieProductionYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieReports.FirstOrDefault().MovieBoxOfficeReturn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieReports.FirstOrDefault().DirectorFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieReports.FirstOrDefault().DirectorRetired)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieReports.FirstOrDefault().ReviewContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieReports.FirstOrDefault().ReviewRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieReports.FirstOrDefault().ReviewReviewer)
+            </th>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.MovieId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MovieName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MovieProductionYear)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model._MovieBoxOfficeReturn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MovieBoxOfficeReturn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DirectorFullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model._DirectorRetired)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DirectorRetired)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReviewContent)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReviewRating)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReviewReviewer)
-        </th>
-      
-    </tr>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.MovieId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MovieName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MovieProductionYear)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item._MovieBoxOfficeReturn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MovieBoxOfficeReturn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DirectorFullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item._DirectorRetired)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DirectorRetired)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReviewContent)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReviewRating)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReviewReviewer)
-        </td>
-       
-    </tr>
-}
+        @foreach (var item in Model.MovieReports)
+        {
+            <tr>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.MovieId)*@
+                    @Html.ActionLink("Movie Details", "Details", "Movies", new { id = item.MovieId }, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieProductionYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieBoxOfficeReturn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DirectorFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DirectorRetired)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReviewContent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReviewRating)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReviewReviewer)
+                </td>
 
-</table>
+            </tr>
+        }
+
+    </table>
+</div>

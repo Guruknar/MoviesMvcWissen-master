@@ -42,7 +42,7 @@ namespace _036_MoviesMvcWissen.Controllers
         }
 
         // GET: Reviews/Create
-        [Route("CreateReview")]
+        [Route("CreateReview")] // bu sayede createreview route'ı, default route'ın altında tanımlandığında da çalışmasını sağlıyoruz(bu olmazsa üstünde tanımlama yapmamız lazım)
         public ActionResult Create()
         {
             ViewBag.MovieId = new SelectList(db.Movies, "Id", "Name");

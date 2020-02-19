@@ -1,7 +1,9 @@
 ﻿using _036_MoviesMvcWissen.Contexts;
 using _036_MoviesMvcWissen.Models;
+using _036_MoviesMvcWissen.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity.SqlServer;
 using System.Globalization;
 using System.Linq;
@@ -13,8 +15,9 @@ namespace _036_MoviesMvcWissen.Controllers
     public class ReportsController : Controller
     {
         MoviesContext db = new MoviesContext();  // MovieReportModel and ReportsController
-        public ActionResult Movies()
+        public ActionResult Movies(ReportsMoviesViewModel reportsMoviesViewModel)
         {
+            
             var movieQuery = db.Movies.AsQueryable();
             var directoryQuery = db.Directors.AsQueryable();
             var movieDirectoryQuery = db.MovieDirectors.AsQueryable();
@@ -68,7 +71,13 @@ namespace _036_MoviesMvcWissen.Controllers
                             ReviewReviewer = sub_movie_review.Reviewer
                         };
 
-            var model = query.ToList().Select(e => new MovieReportModel()
+            var recordCount = query.Count();
+            reportsMoviesViewModel.RecordsPerPageCount = Convert.ToInt32(ConfigurationManager.AppSettings["ReportsMoviesRecordsPerPage"]);
+
+            query = query.OrderBy(E => E.MovieName);
+            query = query.Skip((reportsMoviesViewModel.PageNumber - 1) * reportsMoviesViewModel.RecordsPerPageCount).Take(reportsMoviesViewModel.RecordsPerPageCount);
+
+            var list = query.ToList().Select(e => new MovieReportModel()
             {
 
 
@@ -81,8 +90,14 @@ namespace _036_MoviesMvcWissen.Controllers
                 ReviewContent = e.ReviewContent,
                 ReviewRating = e.ReviewRating,
                 ReviewReviewer = e.ReviewReviewer
-            });
-            return View(model);
+            }).ToList();
+
+
+
+            reportsMoviesViewModel.MovieReports = list;
+            reportsMoviesViewModel.RecordCount = recordCount;
+
+            return View(reportsMoviesViewModel);
         }
 
     }

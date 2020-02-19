@@ -13,6 +13,8 @@ namespace _036_MoviesMvcWissen
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");// istediğimin route ı erişilemez hale getirme yolu
 
+            routes.MapMvcAttributeRoutes(); // bunu ekleyerek Demos tkai route attribute tanımının çalışmasını sağlayacak
+
             //routes.Add( // Add li yolu
             //      "GetReviews", new Route("getreviews", new RouteValueDictionary( new {controller = "Reviews", action = "Index"}), new MvcRouteHandler())
             //    );
@@ -24,11 +26,7 @@ namespace _036_MoviesMvcWissen
                 constraints: new { httpMethod = new HttpMethodConstraint("POST", "GET") }
                 );
 
-            routes.MapRoute(
-             name: "CreateReview",
-             url: "createreview",
-             defaults: new { controller = "Reviews", action = "Create" }
-             );
+            
 
             routes.MapRoute(
                 name: "Default",
@@ -38,6 +36,12 @@ namespace _036_MoviesMvcWissen
                 { "_036_MoviesMvcWissen.Controllers" }
             );
 
+            routes.MapRoute(
+             name: "CreateReview",
+             url: "createreview",
+             defaults: new { controller = "Reviews", action = "Create" }
+             );
+
             //routes.MapRoute(
             //    "Profile",
             //    //"{userName}",// kullanıcı adı about veya contact şeklinde girildiğinde URL yönlendirmede sorun çıkacaktır
@@ -45,7 +49,7 @@ namespace _036_MoviesMvcWissen
             //    new { controller = "Account", action = "Profile" }
             //    );
 
-          
+
 
         }
     }
