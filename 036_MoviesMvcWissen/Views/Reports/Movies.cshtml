@@ -1,0 +1,87 @@
+﻿@model IEnumerable<_036_MoviesMvcWissen.Models.MovieReportModel>
+
+@{
+    ViewBag.Title = "Movie Report";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieProductionYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model._MovieBoxOfficeReturn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieBoxOfficeReturn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DirectorFullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model._DirectorRetired)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DirectorRetired)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReviewContent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReviewRating)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReviewReviewer)
+        </th>
+      
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MovieId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MovieName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MovieProductionYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item._MovieBoxOfficeReturn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MovieBoxOfficeReturn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DirectorFullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item._DirectorRetired)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DirectorRetired)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReviewContent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReviewRating)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReviewReviewer)
+        </td>
+       
+    </tr>
+}
+
+</table>

@@ -26,6 +26,8 @@ namespace _036_MoviesMvcWissen.Contexts
 
         public System.Data.Entity.DbSet<_036_MoviesMvcWissen.Models.Demos.Templates.PersonModel> People { get; set; }
 
+
+
         //protected override void OnModelCreating(DbModelBuilder modelBuilder) // bunu ignore et tablosunu oluşturma demek
         //{
         //    modelBuilder.Ignore<vwUser>();
