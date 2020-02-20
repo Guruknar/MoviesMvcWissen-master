@@ -83,4 +83,23 @@
         }
 
     </table>
+
 </div>
+@using (Html.BeginForm("Movies", "Reports", FormMethod.Get, new { id = "fMovies" }))
+{
+ <div class="row">
+    <div class="col-lg-10 col-8">
+
+    </div>
+    <div class="col-lg-2 col-4">
+        @Html.DropDownList("PageNumber", Model.PageNumbers, new { @class = "form-control ddlPageNumber" })
+    </div>
+ </div>
+}
+<script>
+    $(document).ready(function () {
+        $(".ddlPageNumber").change(function () {
+            $("#fMovies").submit();
+        });
+    });
+</script>

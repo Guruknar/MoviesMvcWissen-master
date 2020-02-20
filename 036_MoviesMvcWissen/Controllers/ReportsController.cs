@@ -79,8 +79,6 @@ namespace _036_MoviesMvcWissen.Controllers
 
             var list = query.ToList().Select(e => new MovieReportModel()
             {
-
-
                 MovieId = e.MovieId,
                 MovieName = e.MovieName,
                 MovieProductionYear = e.MovieProductionYear,
@@ -91,11 +89,24 @@ namespace _036_MoviesMvcWissen.Controllers
                 ReviewRating = e.ReviewRating,
                 ReviewReviewer = e.ReviewReviewer
             }).ToList();
-
-
-
+            
             reportsMoviesViewModel.MovieReports = list;
             reportsMoviesViewModel.RecordCount = recordCount;
+            //kaç sayfa olduğunu hesapladık altta, recordcount'ı sayfada olmasını istediğimiz count sayısına(recordsperpagecount) a böldük
+            int numberOfPages = Convert.ToInt32(Math.Ceiling((decimal)reportsMoviesViewModel.RecordCount / (decimal)reportsMoviesViewModel.RecordsPerPageCount));
+            List<SelectListItem> pageList = new List<SelectListItem>();
+            SelectListItem pageItem;
+
+            for (int i =1; i<= numberOfPages; i++)
+            {
+                pageItem = new SelectListItem()
+                {
+                    Value = i.ToString(),
+                    Text = i.ToString()
+                };
+                pageList.Add(pageItem);
+            }
+            reportsMoviesViewModel.PageNumbers = new SelectList(pageList,"Value","Text", reportsMoviesViewModel.PageNumber);
 
             return View(reportsMoviesViewModel);
         }
