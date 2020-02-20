@@ -180,7 +180,7 @@ namespace _036_MoviesMvcWissen.Controllers
                     var moviesFolder = filesFolder + @"\Movies";
                     if (!Directory.Exists(moviesFolder))
                         Directory.CreateDirectory(moviesFolder);
-                    filePath = ConfigurationManager.AppSettings["FilesFolder"] + "/Movies/" + fileName; // virtual path
+                    filePath = ConfigurationManager.AppSettings["FilesFolder"] + "/Movies/" + fileName; // virtual path olmalı veritabanına kaydettiğimiz path
                     //filePath = Path.Combine(Server.MapPath("~/Files/Movies"), fileName);//fiziksel path sıkinti çıkarir başka pcde
                 }
             }
