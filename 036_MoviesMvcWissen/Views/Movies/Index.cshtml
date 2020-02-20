@@ -58,6 +58,7 @@
 <table class="table">
     <tr>
         <td></td>
+        <td></td>
         <td>
             <b>Name</b>
         </td>
@@ -100,6 +101,15 @@
                 @Html.ActionLink(" ", "Edit", new { id = movie.Id }, new { @class = "fa fa-pencil-square-o text-success" })
                 &nbsp;
                 @Html.ActionLink(" ", "Delete", new { id = movie.Id }, new { @class = "fa fa-trash text-danger" })
+            </td>
+            <td>
+                @{
+                    if (movie.FilePath != null)
+                    {
+                        <img src="../../@movie.FilePath" width="200" height="200" />
+                    }
+                }
+                
             </td>
             <td>
                 @movie.Name

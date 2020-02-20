@@ -11,7 +11,7 @@
     @ViewBag.Message
 </p>
 
-<form action="~/Movies/Add" method="post">
+<form action="~/Movies/Add" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="tbName">Name</label>&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="text" class="form-control-sm" id="tbName" name="Name" />
@@ -41,6 +41,11 @@
             }
         </select>
         @*@Html.ListBox()*@
+    </div>
+
+    <div class="form-group">
+        <label for="fuImage">Image</label>
+        <input type="file" name="Image" accept="image/*" id="fuImage" />
     </div>
 
 

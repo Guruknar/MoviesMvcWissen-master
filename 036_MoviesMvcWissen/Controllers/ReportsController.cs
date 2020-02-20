@@ -17,7 +17,17 @@ namespace _036_MoviesMvcWissen.Controllers
         MoviesContext db = new MoviesContext();  // MovieReportModel and ReportsController
         public ActionResult Movies(ReportsMoviesViewModel reportsMoviesViewModel)
         {
+            GetModel(reportsMoviesViewModel);
+            return View(reportsMoviesViewModel);
+        }
+        public ActionResult MoviesAjax(ReportsMoviesViewModel reportsMoviesViewModel)
+        {
+            GetModel(reportsMoviesViewModel);
+            return PartialView("_Movies", reportsMoviesViewModel);
             
+        }
+        private void GetModel(ReportsMoviesViewModel reportsMoviesViewModel)
+        {
             var movieQuery = db.Movies.AsQueryable();
             var directoryQuery = db.Directors.AsQueryable();
             var movieDirectoryQuery = db.MovieDirectors.AsQueryable();
@@ -46,13 +56,14 @@ namespace _036_MoviesMvcWissen.Controllers
 
             // left outer join // ;_;
 
-            var query = from m in movieQuery 
-                        join md in movieDirectoryQuery 
+            var query = from m in movieQuery
+                        join md in movieDirectoryQuery
                         on m.Id equals md.MovieId into movie_moviedirector
                         from sub_movie_moviedirector in movie_moviedirector.DefaultIfEmpty()
 
                         join d in directoryQuery
-                        on sub_movie_moviedirector.DirectorId equals d.Id into moviedirector_director from sub_moviedirector_director in moviedirector_director.DefaultIfEmpty()
+                        on sub_movie_moviedirector.DirectorId equals d.Id into moviedirector_director
+                        from sub_moviedirector_director in moviedirector_director.DefaultIfEmpty()
 
                         join r in reviewQuery
                         on m.Id equals r.MovieId into movie_review
@@ -89,7 +100,7 @@ namespace _036_MoviesMvcWissen.Controllers
                 ReviewRating = e.ReviewRating,
                 ReviewReviewer = e.ReviewReviewer
             }).ToList();
-            
+
             reportsMoviesViewModel.MovieReports = list;
             reportsMoviesViewModel.RecordCount = recordCount;
             //kaç sayfa olduğunu hesapladık altta, recordcount'ı sayfada olmasını istediğimiz count sayısına(recordsperpagecount) a böldük
@@ -97,7 +108,7 @@ namespace _036_MoviesMvcWissen.Controllers
             List<SelectListItem> pageList = new List<SelectListItem>();
             SelectListItem pageItem;
 
-            for (int i =1; i<= numberOfPages; i++)
+            for (int i = 1; i <= numberOfPages; i++)
             {
                 pageItem = new SelectListItem()
                 {
@@ -106,10 +117,10 @@ namespace _036_MoviesMvcWissen.Controllers
                 };
                 pageList.Add(pageItem);
             }
-            reportsMoviesViewModel.PageNumbers = new SelectList(pageList,"Value","Text", reportsMoviesViewModel.PageNumber);
-
-            return View(reportsMoviesViewModel);
+            reportsMoviesViewModel.PageNumbers = new SelectList(pageList, "Value", "Text", reportsMoviesViewModel.PageNumber);
+            //return reportsMoviesViewModel;
         }
+
 
     }
 
