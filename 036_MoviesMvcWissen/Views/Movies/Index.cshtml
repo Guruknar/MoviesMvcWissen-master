@@ -106,10 +106,17 @@
                 @{
                     if (movie.FilePath != null)
                     {
-                        <img src="../../@movie.FilePath" width="200" height="200" /> //UrlContent bak
+
+                        <img src="../../@movie.FilePath" width="200" height="200" />
+                        @*<img src="../../@movie.FilePath" class="img-thumbnail" style="width: 50% !important;"/>*@
+
+                        @*<br /> fotoğrafı kaldırmak için
+                @Html.ActionLink(" ", "Delete", new { id = movie.Id }, new { @class = "fa fa-ban text-danger mx-auto" })*@
+
+
                     }
                 }
-                
+
             </td>
             <td>
                 @movie.Name

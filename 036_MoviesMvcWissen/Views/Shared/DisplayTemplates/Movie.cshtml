@@ -27,6 +27,17 @@
         <dd>
             @Html.DisplayFor(model => model.BoxOfficeReturn)
         </dd>
+        <dt>
+            @Html.Label("lImage","Image")
+        </dt>
+        <dd>
+            @{ 
+                if(Model.FilePath != null)
+                {
+                    <img src="/@Url.Content(Model.FilePath)" title="@Model.Name" alt="@Model.Name" class="img-fluid" style="width:40% !important;"/>
+                }
+            }
+        </dd>
 
     </dl>
 </div>
